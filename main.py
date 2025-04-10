@@ -17,7 +17,7 @@ model_training = st.container()
 
 @st.cache_data
 def get_data():
-    taxi_data = pd.read_csv('data/Preprocessed_ForeignX.csv')
+    taxi_data = pd.read_csv('Preprocessed_ForeignX.csv')
 
     return taxi_data
 
