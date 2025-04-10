@@ -119,7 +119,7 @@ with model_training:
     # Load the mode
 @st.cache_resource  # Cache the model to prevent reloading on every interactio
 def load_model():
-    return joblib.load('SINGAPOREs - SINGAPORE DOLLAR_US__ARIMA_best_model.joblib')
+    return joblib.load('SINGAPORE - SINGAPORE DOLLAR_US__ARIMA_best_model.joblib')
 model = load_model()
 
     
