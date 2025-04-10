@@ -127,10 +127,18 @@ def load_model():
     return joblib.load('SINGAPORE - SINGAPORE DOLLAR_US__ARIMA_best_model.joblib')
 model = load_model()
 
+# Add currency selection dropdown
+st.sidebar.header("Forecast Settings")
+currency_options = [col for col in fx_data.columns if col != 'Time Serie']
+selected_currency = st.sidebar.selectbox(
+    "Select Currency to Forecast:",
+    options=currency_options
+)
+
 # Add forecast period slider
 forecast_days = st.sidebar.slider(
     "Number of Days to Forecast:",
     min_value=1,
     max_value=30,
     value=7
-)  
+)
