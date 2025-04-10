@@ -127,4 +127,10 @@ def load_model():
     return joblib.load('SINGAPORE - SINGAPORE DOLLAR_US__ARIMA_best_model.joblib')
 model = load_model()
 
-    
+# Add forecast period slider
+forecast_days = st.sidebar.slider(
+    "Number of Days to Forecast:",
+    min_value=1,
+    max_value=30,
+    value=7
+)  
