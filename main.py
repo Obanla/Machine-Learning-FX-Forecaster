@@ -142,3 +142,30 @@ forecast_days = st.sidebar.slider(
     max_value=30,
     value=7
 )
+
+
+@st.cache_resource
+def load_currency_model(currency_name):
+    try:
+        # Create a safe filename by replacing problematic characters
+        safe_name = currency_name.replace(" ", "_").replace("/", "_").replace("-", "_")
+        model_path = f'{safe_name}_ARIMA_model.joblib'
+        return joblib.load(model_path)
+    except FileNotFoundError:
+        st.error(f"Model for {currency_name} not found. Using default model instead.")
+        # If specific model not found, load your best model
+        return joblib.load('SINGAPORE_-_SINGAPORE_DOLLAR_US__ARIMA_best_model.joblib')
+
+
+def forecast_currency(model, days):
+    # Get forecast for specified number of days
+    forecast_result = model.forecast(steps=days)
+    forecast_dates = pd.date_range(start=fx_data.index[-1] + pd.Timedelta(days=1), periods=days)
+    
+    # Create a DataFrame with the forecasted values
+    forecast_df = pd.DataFrame({
+        'Date': forecast_dates,
+        'Forecasted Value': forecast_result
+    })
+    
+    return forecast_df
