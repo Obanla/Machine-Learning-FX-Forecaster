@@ -106,7 +106,12 @@ with features:
     st.markdown('**Price of a each currency and the date as it is a univariate data analysis**')
 
 
-
+# Add UI components
+st.title("Model Deployment with Streamlit")
+input_value = st.number_input("Enter input value:")
+if st.button("Predict"):
+    prediction = model.predict([[input_value]])
+    st.write(f"Prediction: {prediction}")
 
 
 
