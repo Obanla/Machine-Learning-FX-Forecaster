@@ -22,6 +22,52 @@ def get_data():
     return taxi_data
 
 
+# Prediction Section
+st.header("Currency Forecast")
+st.write(f"Showing {forecast_days} day forecast for {selected_currency}")
+
+if st.button("Generate Forecast"):
+    with st.spinner("Generating forecast..."):
+        # Load model for selected currency
+        model = load_currency_model(selected_currency)
+        
+        # Generate forecast
+        forecast_data = forecast_currency(model, forecast_days)
+        
+        # Display forecast results
+        st.subheader("Forecast Results")
+        st.dataframe(forecast_data)
+        
+        # Plot forecast
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        # Get historical data for comparison
+        historical_data = fx_data[selected_currency].iloc[-30:]  # Last 30 days
+        
+        # Plot historical data
+        ax.plot(historical_data.index, historical_data.values, 
+                label='Historical', color='blue')
+        
+        # Plot forecast
+        ax.plot(forecast_data['Date'], forecast_data['Forecasted Value'], 
+                label='Forecast', color='red', linestyle='--')
+        
+        ax.set_title(f"{selected_currency} - Forecast for Next {forecast_days} Days")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Exchange Rate")
+        ax.legend()
+        ax.grid(True)
+        
+        # Display the plot
+        st.pyplot(fig)
+        
+        # Display confidence metrics
+        st.subheader("Forecast Summary")
+        st.write(f"Latest value: {historical_data.iloc[-1]:.4f}")
+        st.write(f"Forecasted end value: {forecast_data['Forecasted Value'].iloc[-1]:.4f}")
+        change = ((forecast_data['Forecasted Value'].iloc[-1] - historical_data.iloc[-1]) / 
+                 historical_data.iloc[-1] * 100)
+        st.write(f"Projected change: {change:.2f}%")
 
 
 # Header Section
